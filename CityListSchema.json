@@ -1,0 +1,18 @@
+[
+  {
+    "name": "name",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "code",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "Population",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  }
+]
+
