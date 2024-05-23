@@ -1,0 +1,10 @@
+*.db
+__pycache__/
+bin/
+include/
+lib/
+lib64/*
+lib64
+.gcloud-conf.json
+pyvenv.cfg
+Scripts/
