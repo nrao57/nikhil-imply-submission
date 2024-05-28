@@ -25,22 +25,22 @@ I will be solving this with a single python script and Google BigQuery. The scri
 
 ## Questions and Answers
 
-1. What is the count of all rows?
+**What is the count of all rows?**
 
 2079
 
-2. What is the city with the largest population?
+**What is the city with the largest population?**
 
 Mumbai (Bombay)
 
-3. What is the total population of all cities in Brazil (CountryCode == BRA)?
+**What is the total population of all cities in Brazil (CountryCode == BRA)?**
 
 55,955,012
 
-4. What changes could be made to improve your program's performance.
+**What changes could be made to improve your program's performance.**
 
 The script could be deployed on a compute engine instance in Google Cloud to improve the network speed and bandwidth. For the json data, the script could batch read and write the data instead of loading the entire file into memory, then writing to the database.
 
-5. How would you scale your solution to a much larger dataset (too large for a single machine to store)?
+**How would you scale your solution to a much larger dataset (too large for a single machine to store)**
 
 BigQuery is a datawarehouse desgined for petabytes of data. Therefore, the table and view should be able to scale easily. However, the script is currently loading data from a local machine, which is a bottleneck for storing and loading data (limited memory, storage, and network speeds). Therefore, I would store the City data in blob storage, then use an Apache Spark cluster to read the files and write to the data warehouse.
