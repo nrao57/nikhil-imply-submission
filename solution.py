@@ -45,6 +45,41 @@ def create_table(project_id, client, dataset_id="nikhil_submission", table_name=
     logging.info(f"Successfully Created table {table_name}")
 
 
+def create_view(project_id, client, dataset_id="nikhil_submission"):
+    """
+    This function creates a table with deduplicated data
+    """
+    logging.info("Creating View for Deduplicated data")
+    # Define the view SQL query
+    # Replace 'your_view_id' with your view ID
+    view_id = f"{project_id}.{dataset_id}.solution"
+    view_query = f"""
+        SELECT
+            name,
+            CountryCode,
+            Population
+        FROM (
+            SELECT
+                name,
+                CountryCode,
+                Population,
+                ROW_NUMBER() OVER (PARTITION BY name, CountryCode ORDER BY Population DESC) AS row_num
+            FROM
+                `{project_id}.{dataset_id}.city_list_raw`
+        )
+        WHERE
+            row_num = 1
+        ORDER BY name ASC
+    """
+    # Define the view
+    view = bigquery.Table(view_id)
+    view.view_query = view_query
+
+    # Create the view
+    view = client.create_table(view, exists_ok=True)
+    logging.info(f"View {view_id} created successfully.")
+
+
 def load_csv_data(client, filepath, project_id, dataset_id="nikhil_submission", table_name='city_list_raw'):
     """
     This function loads a csv file into a bigquery table
@@ -105,6 +140,7 @@ if __name__ == "__main__":
     client = bigquery.Client()
     create_dataset(client)
     create_table(project_id, client)
-    load_avro_data(client, 'CityListB.avro', project_id)
-    load_csv_data(client, 'CityList.csv', project_id)
-    load_json_data(client, 'CityListA.json', project_id)
+    load_avro_data(client, os.path.join('input', 'CityListB.avro'), project_id)
+    load_csv_data(client, os.path.join('input', 'CityList.csv'), project_id)
+    load_json_data(client, os.path.join('input', 'CityListA.json'), project_id)
+    create_view(project_id, client)
