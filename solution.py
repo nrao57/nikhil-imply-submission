@@ -69,7 +69,6 @@ def create_view(project_id, client, dataset_id="nikhil_submission"):
         )
         WHERE
             row_num = 1
-        ORDER BY name ASC
     """
     # Define the view
     view = bigquery.Table(view_id)
